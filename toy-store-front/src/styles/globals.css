@@ -1,0 +1,521 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+	--font-sans:
+		var(--body-font), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+	--font-display: var(--display-font), var(--font-sans);
+
+	--color-*: initial;
+
+	--color-secondary-0: #e5f5ff;
+	--color-secondary-10: #cde8fe;
+	--color-secondary-20: #a1cdfc;
+	--color-secondary-30: #76aff9;
+	--color-secondary-40: #4d8cf5;
+	--color-secondary-50: #2565ef;
+	--color-secondary-60: #1253d4;
+	--color-secondary-70: #1146a7;
+	--color-secondary-80: #0e377c;
+	--color-secondary-90: #0b2652;
+	--color-secondary-100: #061429;
+
+	--color-primary-0: #e8edfb;
+	--color-primary-10: #d2dbf8;
+	--color-primary-20: #a9baf0;
+	--color-primary-30: #8099e7;
+	--color-primary-40: #5879df;
+	--color-primary-50: #1e43d8;
+	--color-primary-60: #1939ba;
+	--color-primary-70: #15309b;
+	--color-primary-80: #10267d;
+	--color-primary-90: #0c1d5e;
+	--color-primary-100: #08133f;
+
+	--color-neutral-0: #ffffff;
+	--color-neutral-10: #f5f5f5;
+	--color-neutral-20: #e4e4e7;
+	--color-neutral-30: #cccccc;
+	--color-neutral-40: #9ba6ab;
+	--color-neutral-50: #5f686d;
+	--color-neutral-60: #262a2c;
+	--color-neutral-70: #2f2f37;
+	--color-neutral-80: #23232a;
+	--color-neutral-90: #16161d;
+	--color-neutral-100: #121415;
+
+	--color-yellow-0: #fff4e5;
+	--color-yellow-10: #fee9c9;
+	--color-yellow-20: #fcdc9d;
+	--color-yellow-30: #f9d272;
+	--color-yellow-40: #f4cb49;
+	--color-yellow-50: #eec821;
+	--color-yellow-60: #cfa812;
+	--color-yellow-70: #a38210;
+	--color-yellow-80: #785e0d;
+	--color-yellow-90: #4e3c0a;
+	--color-yellow-100: #251c05;
+
+	--color-red: var(--color-red-50);
+	--color-red-0: #fdf2f3;
+	--color-red-10: #f9d4d8;
+	--color-red-20: #f4aeb4;
+	--color-red-30: #ee8a92;
+	--color-red-40: #e7606a;
+	--color-red-50: #b00020;
+	--color-red-60: #99001b;
+	--color-red-70: #7a0016;
+	--color-red-80: #5c0010;
+	--color-red-90: #3e000b;
+	--color-red-100: #200005;
+
+	--color-green: var(--color-green-50);
+	--color-green-0: #fafffb;
+	--color-green-10: #ccffda;
+	--color-green-20: #b4fdcc;
+	--color-green-30: #9cfcc2;
+	--color-green-40: #6bfaae;
+	--color-green-50: #40d36c;
+	--color-green-60: #0ee77d;
+	--color-green-70: #0dbf66;
+	--color-green-80: #0c8d4a;
+	--color-green-90: #095d30;
+	--color-green-100: #052e17;
+
+	--brightness-80: 0.8;
+}
+
+@theme inline {
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
+
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+
+	--color-secondary: var(--color-secondary-50);
+	--color-secondary-foreground: var(--secondary-foreground);
+
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+
+	--color-positive: var(--color-green-70);
+	--color-positive-foreground: var(--color-neutral-0);
+
+	--color-negative: var(--color-red-60);
+	--color-negative-foreground: var(--color-neutral-0);
+
+	--color-alert: var(--color-yellow-50);
+	--color-alert-foreground: var(--color-neutral-0);
+
+	--color-destructive: var(--destructive);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+	--color-chart-1: var(--chart-1);
+	--color-chart-2: var(--chart-2);
+	--color-chart-3: var(--chart-3);
+	--color-chart-4: var(--chart-4);
+	--color-chart-5: var(--chart-5);
+	--color-sidebar: var(--sidebar);
+	--color-sidebar-foreground: var(--sidebar-foreground);
+	--color-sidebar-primary: var(--sidebar-primary);
+	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+	--color-sidebar-accent: var(--sidebar-accent);
+	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+	--color-sidebar-border: var(--sidebar-border);
+	--color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+	--radius: 0.5rem;
+	--background: var(--color-neutral-10);
+	--foreground: var(--color-neutral-90);
+
+	--card: var(--color-neutral-0);
+	--card-foreground: var(--color-neutral-90);
+
+	--popover: var(--color-neutral-0);
+	--popover-foreground: var(--color-neutral-90);
+
+	--primary: var(--color-primary-50);
+	--primary-foreground: var(--color-neutral-90);
+
+	--secondary: var(--color-secondary-50);
+	--secondary-foreground: var(--color-neutral-90);
+
+	--muted: var(--color-neutral-10);
+	--muted-foreground: var(--color-neutral-50);
+
+	--accent: var(--color-neutral-90);
+	--accent-foreground: var(--color-neutral-0);
+
+	--border: var(--color-neutral-50);
+	--input: var(--color-neutral-50);
+	--ring: var(--color-primary-50);
+	--chart-1: oklch(0.646 0.222 41.116);
+	--chart-2: oklch(0.6 0.118 184.704);
+	--chart-3: oklch(0.398 0.07 227.392);
+	--chart-4: oklch(0.828 0.189 84.429);
+	--chart-5: oklch(0.769 0.188 70.08);
+	--sidebar: var(--color-neutral-0);
+	--sidebar-foreground: var(--color-neutral-90);
+	--sidebar-primary: var(--color-primary);
+	--sidebar-primary-foreground: var(--color-primary-foreground);
+	--sidebar-accent: var(--color-neutral-80);
+	--sidebar-accent-foreground: var(--color-neutral-0);
+	--sidebar-border: oklch(0.928 0.006 264.531);
+	--sidebar-ring: oklch(0.707 0.022 261.325);
+}
+
+.dark {
+	--background: var(--color-neutral-100);
+	--foreground: var(--color-neutral-20);
+
+	--card: var(--color-neutral-90);
+	--card-foreground: var(--color-neutral-20);
+
+	--popover: var(--color-neutral-90);
+	--popover-foreground: var(--color-neutral-20);
+
+	--primary: var(--color-primary-50);
+	--primary-foreground: var(--color-neutral-90);
+
+	--secondary: var(--color-secondary-50);
+	--secondary-foreground: var(--color-neutral-90);
+
+	--muted: var(--color-neutral-80);
+	--muted-foreground: var(--color-neutral-50);
+
+	--accent: var(--color-neutral-10);
+	--accent-foreground: var(--color-neutral-90);
+
+	--destructive: oklch(0.704 0.191 22.216);
+	--border: var(--color-neutral-60);
+	--input: oklch(1 0 0 / 15%);
+	--ring: oklch(0.551 0.027 264.364);
+	--chart-1: oklch(0.488 0.243 264.376);
+	--chart-2: oklch(0.696 0.17 162.48);
+	--chart-3: oklch(0.769 0.188 70.08);
+	--chart-4: oklch(0.627 0.265 303.9);
+	--chart-5: oklch(0.645 0.246 16.439);
+	--sidebar: var(--color-neutral-90);
+	--sidebar-foreground: var(--color-neutral-20);
+	--sidebar-primary: var(--color-primary);
+	--sidebar-primary-foreground: var(--color-neutral-90);
+	--sidebar-accent: var(--color-neutral-80);
+	--sidebar-accent-foreground: var(--color-neutral-0);
+	--sidebar-border: oklch(1 0 0 / 10%);
+	--sidebar-ring: oklch(0.551 0.027 264.364);
+}
+
+/* Typography utility classes */
+
+@utility typography-display-xs {
+	font-family: var(--font-display);
+	font-size: 2rem;
+	line-height: 140%;
+	font-weight: 700;
+
+	@variant lg {
+		font-size: 2.5rem;
+	}
+}
+@utility typography-display-sm {
+	font-family: var(--font-display);
+	font-size: 2.5rem;
+	line-height: 110%;
+	font-weight: 800;
+
+	@variant lg {
+		font-size: 3rem;
+	}
+}
+@utility typography-display-md {
+	font-family: var(--font-display);
+	font-size: 2.625rem;
+	line-height: 110%;
+	font-weight: 800;
+
+	@variant lg {
+		font-size: 3.5rem;
+	}
+}
+@utility typography-display-lg {
+	font-family: var(--font-display);
+	font-size: 3rem;
+	line-height: 110%;
+	font-weight: 800;
+
+	@variant lg {
+		font-size: 4rem;
+	}
+}
+
+@utility typography-header-xs {
+	font-size: 0.875rem;
+	line-height: 120%;
+	font-weight: 700;
+
+	@variant lg {
+		font-size: 1rem;
+	}
+}
+@utility typography-header-sm {
+	font-size: 1rem;
+	line-height: 120%;
+	font-weight: 700;
+
+	@variant lg {
+		font-size: 1.25rem;
+	}
+}
+@utility typography-header-md {
+	font-size: 1.375rem;
+	line-height: 120%;
+	font-weight: 700;
+
+	@variant lg {
+		font-size: 1.5rem;
+	}
+}
+@utility typography-header-lg {
+	font-size: 2rem;
+	line-height: 100%;
+	font-weight: 500;
+
+	@variant lg {
+		font-size: 2rem;
+	}
+}
+@utility typography-header-xl {
+	font-size: 2.25rem;
+	line-height: 120%;
+	font-weight: 700;
+
+	@variant lg {
+		font-size: 2.5rem;
+	}
+}
+@utility typography-header-2xl {
+	font-size: 2.5rem;
+	line-height: 120%;
+	font-weight: 700;
+
+	@variant lg {
+		font-size: 3rem;
+	}
+}
+
+@utility typography-body-2xs {
+	font-size: 0.625rem;
+	line-height: 120%;
+
+	@variant lg {
+		font-size: 0.6875rem;
+	}
+}
+@utility typography-body-xs {
+	font-size: 0.6875rem;
+	line-height: 120%;
+
+	@variant lg {
+		font-size: 0.75rem;
+	}
+}
+@utility typography-body-sm {
+	font-size: 0.875rem;
+	line-height: 120%;
+
+	@variant lg {
+		font-size: 1rem;
+	}
+}
+@utility typography-body-md {
+	font-size: 1rem;
+	line-height: 140%;
+
+	@variant lg {
+		font-size: 1.25rem;
+	}
+}
+@utility typography-body-lg {
+	font-size: 1.375rem;
+	line-height: 140%;
+
+	@variant lg {
+		font-size: 1.5rem;
+	}
+}
+
+@utility typography-label-xs {
+	font-size: 0.6875rem;
+	line-height: 120%;
+	font-weight: 600;
+
+	@variant lg {
+		font-size: 0.75rem;
+	}
+}
+@utility typography-label-sm {
+	font-size: 0.75rem;
+	line-height: 120%;
+	font-weight: 600;
+
+	@variant lg {
+		font-size: 0.875rem;
+	}
+}
+@utility typography-label-md {
+	font-size: 0.875rem;
+	line-height: 120%;
+	font-weight: 600;
+
+	@variant lg {
+		font-size: 1rem;
+	}
+}
+@utility typography-label-lg {
+	font-size: 1rem;
+	line-height: 120%;
+	font-weight: 600;
+
+	@variant lg {
+		font-size: 1.25rem;
+	}
+}
+@layer utilities {
+	@media (min-height: 450px) {
+		.short\:h-40 {
+			max-height: 330px !important;
+		}
+		.short\:h-30 {
+			max-height: 130px !important;
+		}
+	}
+
+	@media (min-height: 700px) {
+		.short\:h-40 {
+			max-height: 220px !important;
+		}
+		.short\:h-30 {
+			max-height: 134px !important;
+		}
+	}
+
+	@media (max-width: 1400px) {
+		.short\:h-40 {
+			max-height: 350px !important;
+		}
+		.short\:h-30 {
+			max-height: 150px !important;
+		}
+	}
+	@media (min-height: 750px) {
+		.short\:h-40 {
+			max-height: 300px !important;
+		}
+		.short\:h-30 {
+			max-height: 190px !important;
+		}
+	}
+
+	@media (min-height: 850px) {
+		.short\:h-40 {
+			max-height: 400px !important;
+		}
+		.short\:h-30 {
+			max-height: 300px !important;
+		}
+	}
+
+	@media (min-height: 1050px) {
+		.short\:h-40 {
+			max-height: 550px !important;
+		}
+		.short\:h-30 {
+			max-height: 450px !important;
+		}
+	}
+}
+
+@layer base {
+	* {
+		@apply border-border outline-ring/50 font-sans duration-100;
+	}
+	body {
+		@apply bg-background text-foreground typography-body-sm;
+	}
+}
+
+/* iOS Zoom Prevention and Focus Handling */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+	input[type="text"],
+	input[type="email"],
+	input[type="password"],
+	input[type="number"],
+	input[type="tel"],
+	input[type="url"],
+	input[type="search"],
+	textarea,
+	select {
+		font-size: 16px !important;
+		-webkit-transform: translateZ(0);
+		transform: translateZ(0);
+		-webkit-appearance: none;
+		appearance: none;
+		-webkit-tap-highlight-color: transparent;
+		-webkit-user-select: text;
+		user-select: text;
+		-webkit-touch-callout: none;
+		-webkit-text-size-adjust: 100%;
+		text-size-adjust: 100%;
+	}
+}
+
+@supports (-webkit-touch-callout: none) {
+	input,
+	textarea,
+	select {
+		font-size: 16px !important;
+		min-height: 44px;
+		padding: 8px 16px;
+		-webkit-user-select: text;
+		user-select: text;
+		-webkit-touch-callout: none;
+		-webkit-tap-highlight-color: transparent;
+		pointer-events: auto;
+		-webkit-user-modify: read-write-plaintext-only;
+	}
+
+	input:focus,
+	textarea:focus,
+	select:focus {
+		font-size: 16px !important;
+		-webkit-transform: translateZ(0);
+		transform: translateZ(0);
+		outline: none !important;
+		border-color: var(--border) !important;
+		box-shadow: none !important;
+		-webkit-tap-highlight-color: transparent;
+		caret-color: var(--foreground);
+		-webkit-user-select: text;
+		user-select: text;
+	}
+}
