@@ -3,6 +3,7 @@
 import React from "react";
 import { GraficoVendas, DestaquesClientes } from "../../../modules/clientes/components";
 import { normalizarClientes, primeiraLetraFaltante } from "../../../modules/clientes/utils";
+import { useSession } from "next-auth/react";
 
 // Mock do JSON fornecido
 const mockApi = {
@@ -50,7 +51,9 @@ const mockApi = {
 };
 
 export default function Page() {
-	// Normaliza os dados
+
+
+
 	const clientes = normalizarClientes(mockApi);
 	// Junta todas as vendas para o gráfico
 	const vendasPorDia: { [data: string]: number } = {};

@@ -1,15 +1,16 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
 import { Button } from "~/modules/shared/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/modules/shared/components/ui/form";
 import { Input } from "~/modules/shared/components/ui/input";
 import { PasswordInput } from "~/modules/shared/components/ui/password-input";
-import { useLogin } from "../data/auth.api";
 
 const formSchema = z.object({
 	email: z.string({ required_error: "Email é obrigatório" }).email("Digite um email válido"),
@@ -30,26 +31,25 @@ export function LoginForm() {
 	});
 
 	const router = useRouter();
-	const loginMutation = useLogin();
 
-	const onSubmit = (data: FormSchema) => {
+	const onSubmit = async (data: FormSchema) => {
 		if (data.rememberMe) {
 			localStorage.setItem("rememberedEmail", data.email);
 		} else {
 			localStorage.removeItem("rememberedEmail");
 		}
 
-		loginMutation.mutate(
-			{ email: data.email, password: data.password },
-			{
-				onSuccess: () => {
-					router.replace("/home");
-				},
-				onError: () => {
-					// toast.error("Email ou senha inválidos");
-				},
-			},
-		);
+		const result = await signIn("credentials", {
+			email: data.email,
+			password: data.password,
+			redirect: false,
+		});
+
+		if (result?.ok && !result.error) {
+			router.replace("/home");
+		} else {
+			toast.error("Email ou senha inválidos");
+		}
 	};
 
 	React.useEffect(() => {

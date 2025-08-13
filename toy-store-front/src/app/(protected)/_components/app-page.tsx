@@ -21,7 +21,6 @@ export function AppPageHeader({
 }) {
 	return (
 		<>
-			{/* Desktop Header */}
 			<header className={cn("block hidden px-4 py-2", className)} {...props} />
 		</>
 	);

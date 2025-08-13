@@ -60,21 +60,14 @@ export const authConfig: NextAuthOptions = {
 		}),
 	],
 	callbacks: {
-		async jwt({ token, user }: { token: any; user?: any }) {
+		async jwt({ token, user }) {
 			if (user) {
 				token.accessToken = user.accessToken;
-				token.id = user.id;
-				token.email = user.email;
 			}
 			return token;
 		},
-		async session({ session, token }: { session: any; token: any }) {
+		async session({ session, token }) {
 			session.accessToken = token.accessToken as string | undefined;
-			session.user = {
-				...session.user,
-				id: token.id,
-				email: token.email,
-			};
 			return session;
 		},
 	},
