@@ -1,7 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "~/modules/shared/components/ui/form";
+import { Button } from "~/modules/shared/components/ui/button";
+import { Input } from "~/modules/shared/components/ui/input";
+import { DatePicker } from "~/modules/shared/components/date-picker";
+import { useForm } from "react-hook-form";
 
 interface ClienteFormProps {
 	onSubmit: (cliente: ClienteFormData) => void;
+	onClose?: () => void;
 }
 
 export interface ClienteFormData {
@@ -10,53 +16,74 @@ export interface ClienteFormData {
 	nascimento: string;
 }
 
-export const ClienteForm: React.FC<ClienteFormProps> = ({ onSubmit }) => {
-	const [form, setForm] = useState<ClienteFormData>({
-		nome: "",
-		email: "",
-		nascimento: "",
+export const ClienteForm: React.FC<ClienteFormProps> = ({ onSubmit, onClose }) => {
+	const form = useForm<ClienteFormData>({
+		defaultValues: { nome: "", email: "", nascimento: "" },
 	});
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setForm({ ...form, [e.target.name]: e.target.value });
-	};
-
-	const handleSubmit = (e: React.FormEvent) => {
-		e.preventDefault();
-		onSubmit(form);
-	};
+	function handleFormSubmit(data: ClienteFormData) {
+		onSubmit(data);
+		if (onClose) onClose();
+		form.reset();
+	}
 
 	return (
-		<form onSubmit={handleSubmit} className="mx-auto flex max-w-md flex-col gap-4 rounded border bg-white p-4">
-			<label>
-				Nome completo
-				<input type="text" name="nome" value={form.nome} onChange={handleChange} required className="input input-bordered w-full" />
-			</label>
-			<label>
-				E-mail
-				<input
-					type="email"
+		<Form {...form}>
+			<form onSubmit={form.handleSubmit(handleFormSubmit)} className="flex flex-col">
+				<h1 className="pb-4 text-2xl font-bold">Novo Cliente</h1>
+				<FormField
+					control={form.control}
+					name="nome"
+					rules={{ required: "Nome obrigatório" }}
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Nome completo</FormLabel>
+							<FormControl>
+								<Input type="text" placeholder="Nome completo" {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
 					name="email"
-					value={form.email}
-					onChange={handleChange}
-					required
-					className="input input-bordered w-full"
+					rules={{ required: "E-mail obrigatório" }}
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>E-mail</FormLabel>
+							<FormControl>
+								<Input type="email" placeholder="E-mail" {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
 				/>
-			</label>
-			<label>
-				Data de nascimento
-				<input
-					type="date"
+				<FormField
+					control={form.control}
 					name="nascimento"
-					value={form.nascimento}
-					onChange={handleChange}
-					required
-					className="input input-bordered w-full"
+					rules={{ required: "Data de nascimento obrigatória" }}
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Data de nascimento</FormLabel>
+							<FormControl>
+								<DatePicker
+									value={field.value}
+									onChange={field.onChange}
+									placeholder="Data de nascimento"
+									disabled={field.disabled}
+								/>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
 				/>
-			</label>
-			<button type="submit" className="btn btn-primary w-full">
-				Cadastrar
-			</button>
-		</form>
+				<div className="pt-4">
+					<Button type="submit" className="btn-primary bt-4 w-full">
+						Cadastrar
+					</Button>
+				</div>
+			</form>
+		</Form>
 	);
 };

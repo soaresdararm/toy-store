@@ -2,12 +2,14 @@
 
 import { LogOut, ShoppingBag } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Home } from "~/modules/shared/components/icons";
 import { Button } from "~/modules/shared/components/ui/button";
 
 export default function Header() {
 	const pathname = usePathname();
+
+	const router = useRouter();
 
 	return (
 		<>
@@ -21,7 +23,7 @@ export default function Header() {
 						<Link href="/home" className={pathname === "/home" ? "font-medium" : "text-neutral-40"}>
 							Inicial
 						</Link>
-						<Link href="/clientes" className={pathname.startsWith("/clientes") ? "font-medium" : "text-neutral-40"}>
+						<Link href="/customers" className={pathname.startsWith("/customers") ? "font-medium" : "text-neutral-40"}>
 							Clientes
 						</Link>
 					</div>
@@ -29,7 +31,7 @@ export default function Header() {
 
 				<div className="flex items-center gap-4">
 					<div className="hidden items-center gap-4 sm:flex">
-						<Button variant={"neutral"} size={"icon"}>
+						<Button variant={"neutral"} size={"icon"} onClick={() => router.push("/")}>
 							<LogOut />
 						</Button>
 					</div>
