@@ -1,4 +1,3 @@
-
 import { type DefaultSession } from "next-auth";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -44,16 +43,15 @@ export const authConfig: NextAuthOptions = {
 			async authorize(credentials) {
 				if (!credentials) return null;
 				try {
-					const response = await new AuthApi().login({
+					const token = await new AuthApi().login({
 						email: credentials.email as string,
 						password: credentials.password as string,
 					});
-					// Se o retorno é só o token, crie um user mínimo
-					if (!response || typeof response !== "object" || !("token" in response)) return null;
+					if (!token) return null;
 					return {
-						id: credentials.email, // usa o email como id
+						id: credentials.email,
 						email: credentials.email,
-						accessToken: response.token,
+						accessToken: token,
 					};
 				} catch (e) {
 					return null;
