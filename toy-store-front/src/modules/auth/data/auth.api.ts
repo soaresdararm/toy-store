@@ -1,24 +1,40 @@
 import { env } from "~/env";
 import { BaseApi } from "~/modules/shared/data/base.api";
-import type { ApiResponse } from "~/modules/shared/data/schema/api-response.schema";
-import { loginResponseSchema, type LoginInput, type LoginResponse } from "./schema/login.schema";
+import { useMutation } from "@tanstack/react-query";
 
 export class AuthApi extends BaseApi {
 	constructor() {
 		super(env.NEXT_PUBLIC_API_URL);
 	}
 
-	async login(data: LoginInput): Promise<LoginResponse> {
-		const response = await this.httpClient.post<ApiResponse>("/Auth/Login", data);
-		if (!response.data.success) {
-			throw new Error(response.data.message);
+	async login(data: { email: string; password: string }): Promise<string> {
+		const response = await this.httpClient.post("/api/auth/login", data);
+		if (!response.data || !response.data.token) {
+			throw new Error("Login inválido");
 		}
-
-		const parsed = loginResponseSchema.safeParse(response.data.data);
-		if (!parsed.success) {
-			console.error(parsed.error);
-			throw new Error(parsed.error.message);
-		}
-		return parsed.data;
+		return response.data.token;
 	}
+
+	async register(data: { email: string; password: string }) {
+		const response = await this.httpClient.post("/api/auth/register", data);
+		return response.data;
+	}
+}
+
+const api = new AuthApi();
+
+export function useLogin() {
+	return useMutation({
+		mutationFn: async (data: { email: string; password: string }) => {
+			return await api.login(data);
+		},
+	});
+}
+
+export function useRegister() {
+	return useMutation({
+		mutationFn: async (data: { email: string; password: string }) => {
+			return await api.register(data);
+		},
+	});
 }

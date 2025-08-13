@@ -2,8 +2,8 @@ import { z } from "zod";
 import { userSchema } from "./user.schema";
 
 export const loginInputSchema = z.object({
-	login: z.string({ required_error: "Login é obrigatório" }).min(1, { message: "Login é obrigatório" }),
-	password: z.string({ required_error: "Senha é obrigatória" }).min(1, { message: "Senha é obrigatória" }),
+	email: z.string({ required_error: "Email é obrigatório" }).email("Digite um email válido"),
+	password: z.string({ required_error: "Senha é obrigatória" }).min(6, { message: "A senha deve ter no mínimo 6 caracteres" }),
 });
 
 export type LoginInput = z.infer<typeof loginInputSchema>;

@@ -1,19 +1,6 @@
-import { NextResponse } from "next/server";
+import NextAuth from "next-auth";
+import { authConfig } from "~/modules/auth/config";
 
-// Mock simples para endpoints do NextAuth
-export async function GET() {
-	return NextResponse.json({
-		user: {
-			name: "Usuário Mock",
-			email: "mock@mock.com",
-		},
-		expires: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
-	});
-}
+const handler = NextAuth(authConfig);
 
-export async function POST() {
-	return NextResponse.json({
-		ok: true,
-		message: "Login mock realizado",
-	});
-}
+export { handler as GET, handler as POST };

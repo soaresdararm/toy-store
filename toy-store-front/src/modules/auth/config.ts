@@ -1,4 +1,6 @@
-import { type DefaultSession, type NextAuthConfig } from "next-auth";
+
+import { type DefaultSession } from "next-auth";
+import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { AuthApi } from "~/modules/auth/data/auth.api";
 
@@ -28,48 +30,54 @@ declare module "next-auth" {
  *
  * @see https://next-auth.js.org/configuration/options
  */
-export const authConfig = {
+export const authConfig: NextAuthOptions = {
 	session: {
 		strategy: "jwt",
 	},
 	providers: [
 		CredentialsProvider({
-			// The name to display on the sign in form (e.g. "Sign in with...")
 			name: "Credentials",
-			// `credentials` is used to generate a form on the sign in page.
-			// You can specify which fields should be submitted, by adding keys to the `credentials` object.
-			// e.g. domain, username, password, 2FA token, etc.
-			// You can pass any HTML attribute to the <input> tag through the object.
 			credentials: {
-				login: {},
+				email: {},
 				password: {},
 			},
 			async authorize(credentials) {
-				const response = await new AuthApi().login({
-					login: credentials.login as string,
-					password: credentials.password as string,
-				});
-
-				// Return both user and token
-				return {
-					...response.user,
-					accessToken: response.token,
-				};
+				if (!credentials) return null;
+				try {
+					const response = await new AuthApi().login({
+						email: credentials.email as string,
+						password: credentials.password as string,
+					});
+					// Se o retorno é só o token, crie um user mínimo
+					if (!response || typeof response !== "object" || !("token" in response)) return null;
+					return {
+						id: credentials.email, // usa o email como id
+						email: credentials.email,
+						accessToken: response.token,
+					};
+				} catch (e) {
+					return null;
+				}
 			},
 		}),
 	],
 	callbacks: {
-		async jwt({ token, user }) {
-			// Persist the access token to the token right after signin
+		async jwt({ token, user }: { token: any; user?: any }) {
 			if (user) {
 				token.accessToken = user.accessToken;
+				token.id = user.id;
+				token.email = user.email;
 			}
 			return token;
 		},
-		async session({ session, token }) {
-			// Send properties to the client, like an access_token from a provider.
+		async session({ session, token }: { session: any; token: any }) {
 			session.accessToken = token.accessToken as string | undefined;
+			session.user = {
+				...session.user,
+				id: token.id,
+				email: token.email,
+			};
 			return session;
 		},
 	},
-} satisfies NextAuthConfig;
+};

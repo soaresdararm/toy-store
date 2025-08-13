@@ -1,11 +1,8 @@
 import "~/styles/globals.css";
 
 import { type Metadata } from "next";
-import { SessionProvider } from "next-auth/react";
 import { Funnel_Display, Roboto } from "next/font/google";
-import { ThemeProvider } from "~/modules/shared/components/theme-provider";
-import { Toaster } from "~/modules/shared/components/ui/sonner";
-import { TRPCReactProvider } from "~/trpc/react";
+import { AppProviders } from "~/modules/shared/data/app-providers";
 
 export const metadata: Metadata = {
 	title: "toyStore",
@@ -36,14 +33,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 				/>
 			</head>
 			<body>
-				<SessionProvider>
-					<TRPCReactProvider>
-						<ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-							{children}
-						</ThemeProvider>
-					</TRPCReactProvider>
-				</SessionProvider>
-				<Toaster />
+				<AppProviders>{children}</AppProviders>
 			</body>
 		</html>
 	);
