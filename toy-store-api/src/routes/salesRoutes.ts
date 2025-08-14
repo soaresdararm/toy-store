@@ -39,7 +39,7 @@ const router = Router();
  *       400:
  *         description: Dados inválidos
  */
-router.post("/sales", authenticate, createSaleController);
+router.post("/", authenticate, createSaleController);
 
 /**
  * @swagger
@@ -53,7 +53,7 @@ router.post("/sales", authenticate, createSaleController);
  *       200:
  *         description: Estatísticas retornadas
  */
-router.get("/sales/statistics", authenticate, getSalesStatisticsController);
+router.get("/statistics", authenticate, getSalesStatisticsController);
 
 /**
  * @swagger
@@ -67,6 +67,6 @@ router.get("/sales/statistics", authenticate, getSalesStatisticsController);
  *       200:
  *         description: Lista de top clientes
  */
-router.get("/sales/top-clients", authenticate, getTopClientsController);
+router.get("/top-clients", authenticate, getTopClientsController);
 
 export default router;
