@@ -1,19 +1,15 @@
-import { Sequelize } from "sequelize";
+import { Pool } from "pg";
 
-const sequelize = new Sequelize({
-  dialect: "sqlite",
-  storage: "./database.sqlite", 
+const pool = new Pool({
+  user: "toystore_user",
+  host: "localhost",
+  database: "toystore",
+  password: "senha123", // sua senha definida no pgAdmin
+  port: 5432, // padrão do Postgres
 });
 
-export const connectDB = async () => {
-  try {
-    await sequelize.authenticate();
-    console.log(
-      "Connection to the database has been established successfully."
-    );
-  } catch (error) {
-    console.error("Unable to connect to the database:", error);
-  }
-};
+export async function getConnection() {
+  return pool;
+}
 
-export default sequelize;
+export { pool };

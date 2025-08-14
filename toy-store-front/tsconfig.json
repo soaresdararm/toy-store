@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
 		/* Base Options: */
+		"types": ["@types/minimatch"],
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"target": "es2022",

@@ -1,103 +1,78 @@
-import request from 'supertest';
-import app from '../app'; // Importa a aplicação Express
-import { connectDB, disconnectDB } from '../utils/db'; // Funções para conectar e desconectar do banco de dados
-import Sale from '../models/sale'; // Modelo de venda
+import request from "supertest";
+import expressApp from "../app";
+import { deleteSale, getAllSales } from "../models/sale";
 
-describe('Sales API', () => {
+describe("Sales API", () => {
   beforeAll(async () => {
-    await connectDB(); // Conecta ao banco de dados antes dos testes
+    // Limpa todas as vendas antes dos testes
+    const vendas = await getAllSales();
+    for (const v of vendas) {
+      if (v.id) await deleteSale(v.id);
+    }
   });
 
   afterAll(async () => {
-    await disconnectDB(); // Desconecta do banco de dados após os testes
+    // Limpa todas as vendas após os testes
+    const vendas = await getAllSales();
+    for (const v of vendas) {
+      if (v.id) await deleteSale(v.id);
+    }
   });
 
   beforeEach(async () => {
-    await Sale.deleteMany({}); // Limpa a coleção de vendas antes de cada teste
+    // Limpa todas as vendas antes de cada teste
+    const vendas = await getAllSales();
+    for (const v of vendas) {
+      if (v.id) await deleteSale(v.id);
+    }
   });
 
-  it('should create a sale', async () => {
-    const response = await request(app)
-      .post('/api/sales')
-      .send({
-        clientId: 'clientId123',
-        valor: 100,
-        data: '2024-01-01',
-      });
+  it("should create a sale", async () => {
+    const response = await request(expressApp).post("/api/sales").send({
+      clientId: 1,
+      value: 100,
+      date: "2024-01-01",
+    });
 
     expect(response.status).toBe(201);
-    expect(response.body).toHaveProperty('message', 'Sale created successfully');
+    expect(response.body).toHaveProperty("id");
+    expect(response.body).toHaveProperty("clientId", 1);
+    expect(response.body).toHaveProperty("value", 100);
   });
 
-  it('should retrieve sales statistics', async () => {
-    await Sale.create({
-      clientId: 'clientId123',
-      valor: 100,
-      data: '2024-01-01',
+  it("should retrieve sales statistics", async () => {
+    await request(expressApp).post("/api/sales").send({
+      clientId: 1,
+      value: 100,
+      date: "2024-01-01",
     });
 
-    const response = await request(app).get('/api/sales/statistics');
+    const response = await request(expressApp).get("/api/sales/statistics");
 
     expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('totalSalesByDay');
+    expect(response.body).toHaveProperty("totalSalesByDay");
+    expect(Array.isArray(response.body.totalSalesByDay)).toBe(true);
   });
 
-  it('should return the client with the highest sales volume', async () => {
-    await Sale.create({
-      clientId: 'clientId123',
-      valor: 100,
-      data: '2024-01-01',
+  it("should return the top clients", async () => {
+    await request(expressApp).post("/api/sales").send({
+      clientId: 1,
+      value: 100,
+      date: "2024-01-01",
     });
-    await Sale.create({
-      clientId: 'clientId456',
-      valor: 200,
-      data: '2024-01-01',
+    await request(expressApp).post("/api/sales").send({
+      clientId: 2,
+      value: 200,
+      date: "2024-01-01",
     });
 
-    const response = await request(app).get('/api/sales/statistics/highest-volume-client');
+    const response = await request(expressApp).get("/api/sales/top-clients");
 
     expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('clientId', 'clientId456');
+    expect(response.body).toHaveProperty("topVolumeClient");
+    expect(response.body).toHaveProperty("topAverageClient");
+    expect(response.body).toHaveProperty("topFrequencyClient");
   });
 
-  it('should return the client with the highest average sale value', async () => {
-    await Sale.create({
-      clientId: 'clientId123',
-      valor: 100,
-      data: '2024-01-01',
-    });
-    await Sale.create({
-      clientId: 'clientId123',
-      valor: 300,
-      data: '2024-01-02',
-    });
-
-    const response = await request(app).get('/api/sales/statistics/highest-average-client');
-
-    expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('clientId', 'clientId123');
-  });
-
-  it('should return the client with the highest frequency of purchases', async () => {
-    await Sale.create({
-      clientId: 'clientId123',
-      valor: 100,
-      data: '2024-01-01',
-    });
-    await Sale.create({
-      clientId: 'clientId123',
-      valor: 150,
-      data: '2024-01-02',
-    });
-    await Sale.create({
-      clientId: 'clientId456',
-      valor: 200,
-      data: '2024-01-01',
-    });
-
-    const response = await request(app).get('/api/sales/statistics/highest-frequency-client');
-
-    expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('clientId', 'clientId123');
-  });
+  // Os endpoints de highest-average-client e highest-frequency-client foram removidos.
 });

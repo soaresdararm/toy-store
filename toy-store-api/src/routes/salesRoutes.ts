@@ -1,5 +1,9 @@
 import { Router } from "express";
-import salesController from "../controllers/salesController";
+import {
+  createSaleController,
+  getSalesStatisticsController,
+  getTopClientsController,
+} from "../controllers/salesController";
 import { authenticate } from "../middlewares/authMiddleware";
 
 /**
@@ -35,11 +39,7 @@ const router = Router();
  *       400:
  *         description: Dados inválidos
  */
-router.post(
-  "/sales",
-  authenticate,
-  salesController.createSale.bind(salesController)
-);
+router.post("/sales", authenticate, createSaleController);
 
 /**
  * @swagger
@@ -53,11 +53,7 @@ router.post(
  *       200:
  *         description: Estatísticas retornadas
  */
-router.get(
-  "/sales/statistics",
-  authenticate,
-  salesController.getSalesStatistics.bind(salesController)
-);
+router.get("/sales/statistics", authenticate, getSalesStatisticsController);
 
 /**
  * @swagger
@@ -71,10 +67,6 @@ router.get(
  *       200:
  *         description: Lista de top clientes
  */
-router.get(
-  "/sales/top-clients",
-  authenticate,
-  salesController.getTopClients.bind(salesController)
-);
+router.get("/sales/top-clients", authenticate, getTopClientsController);
 
 export default router;
