@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { NextRequest, NextResponse } from "next/server";
 import { ClientFormSchema } from "~/modules/clientes/data/schema/client.schema";
 

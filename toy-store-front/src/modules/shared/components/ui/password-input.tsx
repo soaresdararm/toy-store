@@ -1,8 +1,7 @@
 "use client";
 
 import React from "react";
-
-import { Invisible1, Visible } from "../icons";
+import { Eye, EyeOff } from "lucide-react";
 import { Button } from "./button";
 import { Input, type InputProps } from "./input";
 
@@ -22,7 +21,7 @@ export function PasswordInput(props: Omit<InputProps, "type" | "endIcon">) {
 						type="button"
 						onClick={() => setShowPassword(!showPassword)}
 					>
-						{showPassword ? <Visible /> : <Invisible1 />}
+						{showPassword ? <Eye /> : <EyeOff />}
 					</Button>
 				}
 				{...props}
