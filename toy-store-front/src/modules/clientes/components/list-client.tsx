@@ -19,7 +19,6 @@ const columns: ColumnDef<any>[] = [
 		cell: ({ row }) => {
 			const nasc = row.original.nascimento;
 			if (!nasc) return "-";
-			// Formatar para dd/MM/yyyy
 			const d = new Date(nasc);
 			if (isNaN(d.getTime())) return nasc;
 			return d.toLocaleDateString("pt-BR");
@@ -43,7 +42,6 @@ export default function ListCustomers() {
 
 	useEffect(() => {
 		fetchClientes();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const table = useDataTable({
