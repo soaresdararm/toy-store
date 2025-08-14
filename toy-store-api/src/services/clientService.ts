@@ -9,15 +9,17 @@ import {
 
 export class ClientService {
   async createClient(clientData: Client) {
-    const id = await createClientDb(clientData);
-    return { ...clientData, id };
+    const name = clientData.name ?? clientData.nomeCompleto ?? "";
+    const dbData = { ...clientData, name };
+    const id = await createClientDb(dbData);
+    return { ...clientData, nomeCompleto: name, id };
   }
 
   async getClients(name?: string, email?: string) {
     let clients = await getAllClients();
     if (name) {
       clients = clients.filter((c) =>
-        c.nomeCompleto.toLowerCase().includes(name.toLowerCase())
+        (c.nomeCompleto ?? "").toLowerCase().includes(name.toLowerCase())
       );
     }
     if (email) {

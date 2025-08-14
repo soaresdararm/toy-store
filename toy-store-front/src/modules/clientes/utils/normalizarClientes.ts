@@ -1,4 +1,3 @@
-// Função utilitária para normalizar o JSON fornecido pela API
 export interface Cliente {
 	nome: string;
 	email: string;
@@ -16,7 +15,6 @@ export function normalizarClientes(apiData: any): Cliente[] {
 	}));
 }
 
-// Função para encontrar a primeira letra do alfabeto que não aparece no nome
 export function primeiraLetraFaltante(nome: string): string {
 	const letras = nome
 		.toLowerCase()

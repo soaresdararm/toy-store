@@ -1,3 +1,4 @@
+import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import { setupSwagger } from "./utils/swagger";
@@ -7,6 +8,7 @@ import salesRoutes from "./routes/salesRoutes";
 
 const app = express();
 app.use(cors());
+dotenv.config();
 
 setupSwagger(app);
 const PORT = process.env.PORT || 3000;

@@ -28,6 +28,8 @@ export const login = async (req: Request, res: Response) => {
     return res.status(401).json({ message: "E-mail ou senha inválidos." });
   }
 
-  const token = jwt.sign({ email }, "your_jwt_secret", { expiresIn: "1h" });
+  const token = jwt.sign({ email }, process.env.JWT_SECRET || "secreta", {
+    expiresIn: "2h",
+  });
   return res.status(200).json({ token });
 };

@@ -32,10 +32,17 @@ router.use(authenticate);
  *           schema:
  *             type: object
  *             properties:
- *               nome:
+ *               nomeCompleto:
  *                 type: string
  *               email:
  *                 type: string
+ *               nascimento:
+ *                 type: string
+ *                 format: date
+ *             required:
+ *               - nomeCompleto
+ *               - email
+ *               - nascimento
  *     responses:
  *       201:
  *         description: Cliente criado

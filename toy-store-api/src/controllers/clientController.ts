@@ -5,7 +5,14 @@ const clientService = new ClientService();
 
 export const createClient = async (req: Request, res: Response) => {
   try {
-    const clientData = req.body;
+    const { nomeCompleto, email, nascimento } = req.body;
+    if (!nomeCompleto || !email || !nascimento) {
+      return res.status(400).json({
+        message: "Campos obrigatórios: nomeCompleto, email, nascimento",
+      });
+    }
+    // Enviar ambos os campos para o service/model
+    const clientData = { nomeCompleto, name: nomeCompleto, email, nascimento };
     const newClient = await clientService.createClient(clientData);
     res.status(201).json(newClient);
   } catch (error) {
