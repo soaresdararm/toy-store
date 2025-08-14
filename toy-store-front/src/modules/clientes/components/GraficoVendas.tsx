@@ -1,34 +1,30 @@
 import React from "react";
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 
-interface VendaPorDia {
+export type Venda = {
 	data: string;
 	valor: number;
-}
+};
 
 interface GraficoVendasProps {
-	vendas: VendaPorDia[];
+	vendas: Venda[];
 }
 
 export const GraficoVendas: React.FC<GraficoVendasProps> = ({ vendas }) => {
-	if (!vendas.length) return <div>Nenhuma venda registrada.</div>;
-	const maxValor = Math.max(...vendas.map((v) => v.valor));
+	if (!vendas || vendas.length === 0) {
+		return <div className="text-gray-500">Nenhuma venda registrada.</div>;
+	}
 	return (
-		<svg width={400} height={200} className="rounded bg-gray-100">
-			{vendas.map((v, i) => (
-				<rect
-					key={v.data}
-					x={i * 40 + 30}
-					y={200 - (v.valor / maxValor) * 150 - 20}
-					width={30}
-					height={(v.valor / maxValor) * 150}
-					fill="#3b82f6"
-				/>
-			))}
-			{vendas.map((v, i) => (
-				<text key={v.data + "-label"} x={i * 40 + 45} y={190} fontSize={12} textAnchor="middle">
-					{v.data.slice(5)}
-				</text>
-			))}
-		</svg>
+		<div style={{ width: "100%", height: 180 }}>
+			<ResponsiveContainer>
+				<BarChart data={vendas} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+					<CartesianGrid strokeDasharray="3 3" />
+					<XAxis dataKey="data" />
+					<YAxis />
+					<Tooltip />
+					<Bar dataKey="valor" fill="#2563eb" />
+				</BarChart>
+			</ResponsiveContainer>
+		</div>
 	);
 };

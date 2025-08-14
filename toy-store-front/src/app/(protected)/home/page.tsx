@@ -3,6 +3,8 @@
 import React from "react";
 import { GraficoVendas, DestaquesClientes } from "../../../modules/clientes/components";
 import { normalizarClientes, primeiraLetraFaltante } from "../../../modules/clientes/utils";
+
+import { DataTable, useDataTable } from "../../../modules/shared/components/ui/data-table";
 import { useSession } from "next-auth/react";
 
 // Mock do JSON fornecido
@@ -51,9 +53,6 @@ const mockApi = {
 };
 
 export default function Page() {
-
-
-
 	const clientes = normalizarClientes(mockApi);
 	// Junta todas as vendas para o gráfico
 	const vendasPorDia: { [data: string]: number } = {};
@@ -63,6 +62,33 @@ export default function Page() {
 		});
 	});
 	const vendasArray = Object.entries(vendasPorDia).map(([data, valor]) => ({ data, valor: Number(valor) }));
+
+	// Definição das colunas para o DataTable
+	const columns = [
+		{
+			accessorKey: "nome",
+			header: "Nome",
+		},
+		{
+			accessorKey: "email",
+			header: "E-mail",
+		},
+		{
+			accessorKey: "nascimento",
+			header: "Nascimento",
+		},
+		{
+			accessorKey: "vendas",
+			header: "Vendas",
+			cell: ({ row }: any) => row.original.vendas.length,
+		},
+		{
+			accessorKey: "letraFaltante",
+			header: "Letra faltante",
+			cell: ({ row }: any) => primeiraLetraFaltante(row.original.nome),
+		},
+	];
+	const dataTable = useDataTable ? useDataTable({ columns, data: clientes }) : undefined;
 
 	return (
 		<div className="mx-auto max-w-4xl p-4">
@@ -74,28 +100,7 @@ export default function Page() {
 			<DestaquesClientes clientes={clientes} />
 			<section className="mt-8">
 				<h2 className="mb-2 font-semibold">Lista de clientes</h2>
-				<table className="w-full rounded border bg-white">
-					<thead>
-						<tr className="bg-gray-100">
-							<th className="p-2">Nome</th>
-							<th className="p-2">E-mail</th>
-							<th className="p-2">Nascimento</th>
-							<th className="p-2">Vendas</th>
-							<th className="p-2">Letra faltante</th>
-						</tr>
-					</thead>
-					<tbody>
-						{clientes.map((c, i) => (
-							<tr key={i} className="border-t">
-								<td className="p-2">{c.nome}</td>
-								<td className="p-2">{c.email}</td>
-								<td className="p-2">{c.nascimento}</td>
-								<td className="p-2">{c.vendas.length}</td>
-								<td className="p-2 font-mono text-lg text-blue-600">{primeiraLetraFaltante(c.nome)}</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
+				{dataTable ? <DataTable table={dataTable} /> : <div>Carregando tabela...</div>}
 			</section>
 		</div>
 	);
