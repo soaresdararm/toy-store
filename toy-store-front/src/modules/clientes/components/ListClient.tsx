@@ -133,7 +133,6 @@ export default function ListCustomers() {
 								row={row}
 								onEdit={() => setEditCliente(row.original)}
 								onDelete={() => {
-									// Busca o cliente na lista pelo id para garantir que é o objeto correto
 									const id = row.original.id;
 									const cliente = clientesComDestaque.find((c: any) => c.id === id);
 									setDeleteCliente(cliente || row.original);
@@ -147,7 +146,7 @@ export default function ListCustomers() {
 	});
 
 	return (
-		<div className="mx-auto max-w-4xl p-4">
+		<div className="mx-auto max-w-5xl p-4">
 			<div className="mb-4 flex items-center justify-between">
 				<h1 className="text-2xl font-bold">Clientes</h1>
 				<Button onClick={() => setOpen(true)}>Cadastrar Cliente</Button>

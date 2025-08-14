@@ -1,4 +1,4 @@
-import ListCustomers from "~/modules/clientes/components/list-client";
+import ListCustomers from "~/modules/clientes/components/ListClient";
 
 export default function CustomersPage() {
 	return (
